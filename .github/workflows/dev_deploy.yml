@@ -1,0 +1,30 @@
+name: trapdoor dev deployment
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:     
+    - uses: actions/checkout@v2
+    - name: setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: dependencies
+      run: dotnet restore
+    - name: build api
+      run: |
+            dotnet build Trapdoor.csproj --configuration Development
+            dotnet publish Trapdoor.csproj -o ./staging/app/Trapdoor /p:EnvironmentName=Development
+          
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+    - name: deploy
+      run: sam deploy --template-file ./serverless.template --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name trapdoor --s3-bucket trapdoor-github-action-bucket --debug

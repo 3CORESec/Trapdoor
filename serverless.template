@@ -1,0 +1,161 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Transform" : "AWS::Serverless-2016-10-31",
+  "Description" : "Template for trapdoor honeypot",
+  "Parameters" : {
+  },
+  "Resources" : {
+    "trapdoorRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "Description": "Role used by Trapdoor Lambdas for execution",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "ManagedPolicyArns": [
+                    {
+                        "Ref": "trapdoorPolicy"
+                    }
+                ],
+                "RoleName": "trapdoor"
+            }
+        },
+    "trapdoorPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description": "This policy is used by the Trapdoor Lambda execution role",
+                "ManagedPolicyName": "trapdoor",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutAnalyticsConfiguration",
+                                "s3:PutAccelerateConfiguration",
+                                "s3:DeleteObjectVersion",
+                                "dynamodb:DeleteItem",
+                                "s3:RestoreObject",
+                                "s3:CreateBucket",
+                                "s3:ReplicateObject",
+                                "s3:PutEncryptionConfiguration",
+                                "s3:GetBucketObjectLockConfiguration",
+                                "logs:CreateLogStream",
+                                "s3:DeleteBucketWebsite",
+                                "s3:AbortMultipartUpload",
+                                "s3:PutLifecycleConfiguration",
+                                "s3:UpdateJobPriority",
+                                "s3:DeleteObject",
+                                "s3:DeleteBucket",
+                                "s3:PutBucketVersioning",
+                                "s3:GetObjectRetention",
+                                "dynamodb:BatchWriteItem",
+                                "dynamodb:PutItem",
+                                "lambda:InvokeFunction",
+                                "s3:PutMetricsConfiguration",
+                                "s3:PutReplicationConfiguration",
+                                "dynamodb:Scan",
+                                "dynamodb:Query",
+                                "dynamodb:UpdateItem",
+                                "dynamodb:DescribeStream",
+                                "dynamodb:DescribeTable",
+                                "dynamodb:BatchGetItem",
+                                "dynamodb:GetItem",
+                                "s3:PutObjectLegalHold",
+                                "s3:UpdateJobStatus",
+                                "s3:PutBucketCORS",
+                                "s3:GetObject",
+                                "s3:GetObjectLegalHold",
+                                "logs:CreateLogGroup",
+                                "logs:PutLogEvents",
+                                "s3:PutInventoryConfiguration",
+                                "dynamodb:ListStreams",
+                                "s3:PutObject",
+                                "s3:PutBucketNotification",
+                                "s3:PutBucketWebsite",
+                                "s3:PutBucketRequestPayment",
+                                "s3:PutObjectRetention",
+                                "s3:PutBucketLogging",
+                                "dynamodb:GetShardIterator",
+                                "s3:PutBucketObjectLockConfiguration",
+                                "s3:CreateJob",
+                                "s3:ReplicateDelete",
+                                "dynamodb:GetRecords"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+    "trapdoorLogTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "TRAPDOOR_LOG",
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "Id",
+                        "AttributeType": "S"
+                    },
+                                        {
+                        "AttributeName": "Data",
+                        "AttributeType": "B"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "Id",
+                        "KeyType": "HASH"
+                    },
+                    {
+                        "AttributeName": "Data",
+                        "KeyType": "RANGE"
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
+        },
+    "DefaultFunction" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+        "FunctionName":"Trapdoor",
+        "Handler": "Trapdoor::Trapdoor.Function::FunctionHandler",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "./staging/app/Trapdoor",
+        "Description": "Default function",
+        "MemorySize": 512,
+        "Timeout": 60,
+        "Role": { 
+            "Fn::GetAtt" : [ "trapdoorRole", "Arn" ]
+        },
+        "Policies": [ "AWSLambda_FullAccess" ],
+        "Events": {
+          "ProxyResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/{proxy+}",
+              "Method": "ANY"
+            }
+          }
+        }
+      }
+    }
+  }
+}

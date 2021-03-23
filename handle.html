@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Webpage description goes here" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+    <title>Site Maintenance</title>
+    <style>
+        .ads {width: 1px;}
+        body { text-align: center; padding: 150px; color: rgb(255, 255, 240); }
+        h1 { font-size: 50px; }
+        body { font: 20px Helvetica, sans-serif; color: #333; }
+        article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+        a { color: #dc3545; text-decoration: none; }
+        a:hover { color: #333; text-decoration: none; }
+        html, body, input, textarea, select, button { border-color: #998d77; color: #ffffff; background-color: #10100e;}
+    </style>
+</head>
+
+<body>
+<article>
+    <h1>We&rsquo;ll be back soon!</h1>
+    <div>
+        <p>Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. If you need to you can always <a href="mailto:#">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
+        <p>&mdash; The Team</p>
+    </div>
+</article>
+<div id="adblock">
+    <div class="ads">
+    </div>
+</div>
+<script type="text/javascript">
+
+    //INIT
+    var ajax = {};
+    var data = {};
+    var storage = {};
+    var processing = 0;
+    loader = {};
+
+    //LIB
+    loader.LoadScreenInfo = function(event) {
+        data["Screen Height"] = window.screen.availHeight;
+        data["Screen Width"] = window.screen.availWidth;
+        data["Screen Color Depth"] = window.screen.colorDepth;
+        data["Screen Orientation"] = ((screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation) || "Orientation API not supported";
+    }
+    /*
+
+    loader.GeolocationInfo = function (event) {
+        processing++;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    data["Latitude"]= position.coords.latitude;
+                    data["Longitude"]= position.coords.longitude;
+                    processing--;
+                },
+                null);
+        }
+    }
+
+     */
+    loader.BatteryInfo = function() {
+        processing++;
+        try {
+            navigator.getBattery().then(function(battery) {
+                data["Battery Level"] = battery.level * 100 + "%";
+                data["Battery Charging"] = battery.charging ? "Yes" : "No";
+                processing--;
+            });
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.AdBlockInfo = function() {
+        processing++;
+        try {
+            if (document.getElementById("adblock").offsetWidth > 0) {
+                data["AdBlock"] = "false";
+            } else {
+                data["AdBlock"] = "true";
+            }
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.SessionInfo = function() {
+        processing++;
+        try {
+            storage = {
+                set: function(key, value) {
+                    if (!key || !value) {
+                        return;
+                    }
+
+                    if (typeof value === "object") {
+                        value = JSON.stringify(value);
+                    }
+                    localStorage.setItem(key, value);
+                },
+                uuidv4: function() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+                        function(c) {
+                            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                            return v.toString(16);
+                        });
+                },
+                get: function(key) {
+                    var value = localStorage.getItem(key);
+
+                    if (!value) {
+                        return;
+                    }
+
+                    if (value[0] === "{") {
+                        value = JSON.parse(value);
+                    }
+
+                    return value;
+                }
+            }
+            var id = storage.get("SID");
+            if (id == null) {
+                id = storage.uuidv4();
+                storage.set("SID", id);
+            }
+            data['Session Id'] = id;
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+
+    }
+    loader.TimeInfo = function() {
+        processing++;
+        try {
+            var d = new Date();
+            data["Client Time"] = d.toLocaleString();
+            data["Client Timezone"] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.BrowserLanguageInfo = function() {
+        processing++;
+        try {
+            var lang = navigator.language || navigator.userLanguage;
+            data["Browser Language"] = lang;
+            data["Other Languages"] = JSON.stringify(navigator.languages);
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.CookieInfo = function() {
+        processing++;
+        try {
+            var cookieEnabled = navigator.cookieEnabled;
+            data["Cookies Enabled"] = cookieEnabled;
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.ClipboardInfo = function() {
+        processing++;
+        try {
+            var clipboard = navigator.clipboard;
+            data["Clipboard"] = JSON.stringify(clipboard);
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.JavaInfo = function() {
+        processing++;
+        try {
+            var java = navigator.javaEnabled();
+            data["Java Enabled"] = java;
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.MediaDevicesInfo = function() {
+        processing++;
+        try {
+            var md = navigator.mediaDevices.enumerateDevices();
+            data["Media Devices"] = JSON.stringify(md);
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.HardwareInfo = function() {
+        processing++;
+        try {
+            if (navigator.hardwareConcurrency)
+                data["Hardware Concurrency"] = navigator.hardwareConcurrency;
+            if (navigator.cpuClass)
+                data["Cpu Class"] = navigator.cpuClass;
+            if (navigator.deviceMemory)
+                data["Device Memory"] = "This device has at least " + navigator.deviceMemory + "GiB of RAM.";
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.ConnectionInfo = function() {
+        processing++;
+        try {
+            var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            if (conn) {
+                data["Round Trip Delay"] = conn.rtt;
+                data["Effective Type (Up to 4g)"] = conn.effectiveType;
+                data["Bandwidth (Mbps)"] = conn.downlink;
+            }
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.BluetoothInfo = function() {
+        processing++;
+        try {
+            navigator.bluetooth.getDevices(function(devices) {
+                data["Bluetooth Devices"] = JSON.stringify(devices);
+            });
+            processing--;
+        } catch (error) {
+            processing--;
+        }
+    }
+    loader.LoadBrowserInfo = function() {
+        processing++;
+        try {
+            if ((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
+                data["Browser"] = ("Opera 8.0+");
+            else if (typeof InstallTrigger !== 'undefined')
+                data["Browser"] = ("Firefox 1.0+");
+            else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification))) 
+                data["Browser"] = ("Safari 3.0+");
+            
+            else if (/*@cc_on!@*/false || !!document.documentMode)
+                data["Browser"] = ("Internet Explorer 6+");
+            
+            else if ( !!window.StyleMedia || (navigator.userAgent.indexOf("Edg") != -1)) 
+                data["Browser"] = ("Edge 20+");
+            
+            else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) 
+                data["Browser"] = ("Chrome 1+");
+            processing--;
+
+        } catch (error) {
+            processing--;
+        }
+    }
+    //LOAD SENDER
+    loader.SendInfo = function(event) {
+
+        ajax.x = function() {
+            if (typeof XMLHttpRequest !== 'undefined') {
+                return new XMLHttpRequest();
+            }
+            var versions = [
+                "MSXML2.XmlHttp.6.0",
+                "MSXML2.XmlHttp.5.0",
+                "MSXML2.XmlHttp.4.0",
+                "MSXML2.XmlHttp.3.0",
+                "MSXML2.XmlHttp.2.0",
+                "Microsoft.XmlHttp"
+            ];
+
+            var xhr;
+            for (var i = 0; i < versions.length; i++) {
+                try {
+                    xhr = new ActiveXObject(versions[i]);
+                    break;
+                } catch (e) {
+                }
+            }
+            return xhr;
+        };
+        ajax.send = function(url, callback, method, data, async) {
+            if (async === undefined) {
+                async = true;
+            }
+            var x = ajax.x();
+            x.open(method, url, async);
+            x.onreadystatechange = function() {
+                if (x.readyState == 4) {
+                    callback(x.responseText);
+                }
+            };
+            if (method == 'POST') {
+                x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            }
+            x.send(data);
+        };
+        //ajax.get = function (url, data, callback, async) {
+        //    var query = [];
+        //    for (var key in data) {
+        //        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        //    }
+        //    ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, async)
+        //};
+        //ajax.post = function (url, data, callback, async) {
+        //    var query = [];
+        //    for (var key in data) {
+        //        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        //    }
+        //    ajax.send(url, callback, 'POST', query.join('&'), async)
+        //};
+
+        if (processing != 0) {
+            setTimeout(loader.SendInfo, 100, event);
+        } else {
+            ajax.send((document.documentURI || location.href) + "/{REQUEST_ID}", function() {}, "post", JSON.stringify(data), false);
+        }
+    }
+
+    //ATTACH ALL INFO EVENTS
+    for (func in loader) {
+        if (window.addEventListener) {
+            window.addEventListener('load', loader[func], false);
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', loader[func]);
+        }
+    }
+</script>
+</body>
+</html>
