@@ -28,5 +28,5 @@ jobs:
     - name: zip and upload
       run: |
             zip trapdoor.zip ./staging/app/Trapdoor
-    - name: Upload deb file
+    - name: Upload zip file
       run: aws s3 cp ./trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
