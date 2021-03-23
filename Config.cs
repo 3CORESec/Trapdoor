@@ -4,7 +4,7 @@ namespace Trapdoor
 {
     public class Config
     {
-        public Dictionary<string, string> Paths { get; set; }
+        public Dictionary<string, string> Paths { get; set; } 
         public string WebhookChannel { get; set; }
         public string SlackPath { get; set; }
         public string WebHookToken { get; set; }
