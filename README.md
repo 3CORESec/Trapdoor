@@ -78,7 +78,7 @@ Feel free to open an [issue](https://github.com/3CORESec/Trapdoor/issues) or pin
 
 ## Legal notice
 
-3CORESes is releasing this project as a proof-of-concept for the research community.
+3CORESec is releasing this project as a proof-of-concept for the research community.
 
 Please remember that it might not be legal to run Trapdoor in some countries and that the information you will be accessing could be considered personal data.
 
