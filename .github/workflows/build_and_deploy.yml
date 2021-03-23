@@ -27,6 +27,7 @@ jobs:
         aws-region: eu-central-1
     - name: zip and upload
       run: |
-            zip -r trapdoor.zip ./staging/app
+            cd ./staging/app
+            zip -r trapdoor.zip .
     - name: Upload zip file
       run: aws s3 cp ./trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
