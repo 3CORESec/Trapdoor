@@ -17,8 +17,8 @@ jobs:
       run: dotnet restore
     - name: build api
       run: |
-            dotnet build Trapdoor.csproj --configuration Development
-            dotnet publish Trapdoor.csproj -o ./staging/app/Trapdoor /p:EnvironmentName=Production
+            dotnet build Trapdoor.csproj --configuration Production
+            dotnet publish Trapdoor.csproj -o ./staging/app /p:EnvironmentName=Production
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -27,6 +27,6 @@ jobs:
         aws-region: eu-central-1
     - name: zip and upload
       run: |
-            zip trapdoor.zip ./staging/app/Trapdoor
+            zip trapdoor.zip ./staging/app
     - name: Upload zip file
       run: aws s3 cp ./trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
