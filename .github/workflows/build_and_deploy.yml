@@ -18,7 +18,7 @@ jobs:
     - name: build api
       run: |
             dotnet build Trapdoor.csproj --configuration Development
-            dotnet publish Trapdoor.csproj -o ./staging/app/Trapdoor --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
+            dotnet publish Trapdoor.csproj -o ./staging/app/Trapdoor /p:EnvironmentName=Production
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
