@@ -1,0 +1,32 @@
+name: trapdoor master deployment
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:     
+    - uses: actions/checkout@v2
+    - name: setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: dependencies
+      run: dotnet restore
+    - name: build api
+      run: |
+            dotnet build Trapdoor.csproj --configuration Development
+            dotnet publish Trapdoor.csproj -o ./staging/app/Trapdoor --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+    - name: zip and upload
+      run: |
+            zip trapdoor.zip ./staging/app/Trapdoor
+    - name: Upload deb file
+      run: aws s3 cp ./trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
