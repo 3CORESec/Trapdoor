@@ -3,6 +3,15 @@
   "Transform" : "AWS::Serverless-2016-10-31",
   "Description" : "Template for trapdoor honeypot",
   "Parameters" : {
+    "SLACKPATH":{
+        "Type":"String"
+    },
+    "WEBHOOKCHANNEL":{
+        "Type":"String"
+    },
+    "WEBHOOKTOKEN":{
+        "Type":"String"
+    }
   },
   "Resources" : {
     "trapdoorRole": {
@@ -137,6 +146,19 @@
       "Properties": {
         "FunctionName":"Trapdoor",
         "Handler": "Trapdoor::Trapdoor.Function::FunctionHandler",
+        "Environment":{
+            "Variables": {
+                "WEBHOOKTOKEN": {
+                        "Ref": "WEBHOOKTOKEN"
+                    },
+                "WEBHOOKCHANNEL": {
+                        "Ref": "WEBHOOKCHANNEL"
+                    },
+                "SLACKPATH": {
+                        "Ref": "SLACKPATH"
+                    }
+            }
+        },
         "Runtime": "dotnetcore3.1",
         "CodeUri": "./staging/app/Trapdoor",
         "Description": "Default function",

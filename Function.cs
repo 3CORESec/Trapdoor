@@ -13,14 +13,18 @@ namespace Trapdoor
     public class Function
     {
         private readonly IMemoryCache memoryCache;
+        private Config config;
         public Function()
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
+            config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
+            config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
+            config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
+            config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
         }
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
         {
-            var config = JsonConvert.DeserializeObject<Config>(await File.ReadAllTextAsync("config.json"));
             var sender = new Handler(config, memoryCache);
             var guid = Guid.NewGuid().ToString();
             if (await sender.SendAlerts(request, guid))
