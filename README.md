@@ -68,7 +68,9 @@ Consider using your custom domains instead of the AWS API URLs _(and map them to
 
 ## Usage
 
-Using Trapdoor is as simple as visiting the AWS API URL _(or domain)_. You can retrieve your API Invoke URL by going to AWS API GW -> serverlessrepo-Trapdoor -> Stages -> Prod.
+Using Trapdoor is as simple as visiting the API Endpoint that is made available in the Lambda Application dashboard:
+
+<p align="center"><img src="./imgs/api-screen.png" width="319" height="231"></p>
 
 While all paths *($API/Prod/WHATEVER)* are accepted and alerted, choosing a path that is configured in Trapdoor `config.json` will provide you with a friendly reminder of where that token is located/stored.
 
