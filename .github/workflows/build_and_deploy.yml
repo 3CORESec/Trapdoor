@@ -30,4 +30,4 @@ jobs:
             cd ./staging/app
             zip -r trapdoor.zip .
     - name: Upload zip file
-      run: aws s3 cp ./trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
+      run: aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
