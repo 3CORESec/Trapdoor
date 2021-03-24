@@ -62,7 +62,7 @@ You can create your tokens by editing the `config.json` _(in the AWS Lambda page
 
 ### Domains & Customization
 
-Consider using your custom domains instead of the AWS API URLs _(and map them to the /Prod stage in AWS API)_ so that your tokens can be made available under, for example, **https://important-corp.com/login**. Bear in mind that you can associate unlimited *(different)* domains to an API in AWS API GW, so it's really up to you to configure the best deception options for your tokens 🕵🏻‍♂️
+Consider using your custom domains instead of the AWS API URLs _(and map them to the /Prod stage in AWS API)_ so that your tokens can be made available under, for example, `https://important-corp.com/login`. Bear in mind that you can associate unlimited *(different)* domains to an API in AWS API GW, so it's really up to you to configure the best deception options for your tokens 🕵🏻‍♂️
 
 ## Usage
 
