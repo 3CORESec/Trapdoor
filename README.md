@@ -4,6 +4,8 @@
 
 Trapdoor is an AWS Serverless Application meant to create and alert on [honeyTokens](https://community.broadcom.com/symantecenterprise/communities/community-home/librarydocuments/viewdocument?DocumentKey=74450cf5-2f11-48c5-8d92-4687f5978988&CommunityKey=1ecf5f55-9545-44d6-b0f4-4e4a7f5f5e68&tab=librarydocuments).
 
+<img align="right" src="./imgs/screenshot.png" width="440" height="249">
+
 - Slack Notifications
 - Aggregation & Client Tracking on Slack Notifications
 - HTTP-based and JavaScript-based fingerprinting
@@ -38,7 +40,7 @@ Trapdoor relies on Slack to provide you with alerts. This section will provide y
 
 Additionally you'll also require the ID of the channel that Trapdoor will be sending messages to. You can retrieve this information by visiting the channel in Slack Web, as demonstrated in the image below:
 
-<p><img src="./imgs/slack-channel-id.png"></p>
+<p align="center"><img src="./imgs/slack-channel-id.png" width="680" height="206"></p>
 
 You now have all the information required to deploy via the AWS Serverless Application Repository.
 
