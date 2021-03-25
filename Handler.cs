@@ -51,14 +51,14 @@ namespace Trapdoor
                 foreach (string key in collection.Keys)
                 {
                     alert[key] = collection[key];
-                    if (key == "Session Id")
-                        id = collection["Session Id"];
+                    if (key == "Session ID")
+                        id = collection["Session ID"];
                 }
             }
             alert["Path"] = request.Path;
             alert["Full Path"] = request.RequestContext.Path;
             alert["Host"] = request.Headers["Host"];
-            alert["Http Method"] = request.HttpMethod;
+            alert["HTTP Method"] = request.HttpMethod;
             alert["User Agent"] = request.Headers["User-Agent"];
             if (request.Headers.ContainsKey("CloudFront-Viewer-Country"))
                 alert["Viewer Country"] = request.Headers["CloudFront-Viewer-Country"];
@@ -72,8 +72,8 @@ namespace Trapdoor
                 alert["Viewer Device"] = "Desktop";
             else if (request.Headers["CloudFront-Is-SmartTV-Viewer"] == "true")
                 alert["Viewer Device"] = "SmartTV";
-            alert["Tor Network Used"] = await TorExitUsed(request);
-            alert["Source Ip"] = request.RequestContext.Identity.SourceIp;
+            alert["Tor Network"] = await TorExitUsed(request);
+            alert["Source IP"] = request.RequestContext.Identity.SourceIp;
             return (id, alert);
         }
 

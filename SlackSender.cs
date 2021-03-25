@@ -43,7 +43,7 @@ namespace Trapdoor
                     if (sessionLogs.Any())
                     {
                         sessionLinks = sessionLogs;
-                        res.Item2["Session Id Hits"] = sessionLogs.Count;
+                        res.Item2["Session ID Hits"] = sessionLogs.Count;
                     }
                 }
 
@@ -52,7 +52,7 @@ namespace Trapdoor
                 if (ipLogs.Any())
                 {
                     ipLinks = ipLogs;
-                    res.Item2["Ip Hits"] = ipLogs.Count;
+                    res.Item2["IP Hits"] = ipLogs.Count;
                 }
             }
             catch (Exception e)
@@ -76,7 +76,7 @@ namespace Trapdoor
                             .Select(x => new {title = x.Key, value = x.Value, @short = true})
                             .Concat(new List<dynamic>{new {title = "Previous Session Logs: "}})
                             .Concat(sessionLinks.Select(x => new { value = x}))
-                            .Concat(new List<dynamic>{new {title = "Previous Ip Logs: "}})
+                            .Concat(new List<dynamic>{new {title = "Previous IP Logs: "}})
                             .Concat(ipLinks.Select(x => new {value = x}))
                     }
                 }));
