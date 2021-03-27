@@ -50,7 +50,7 @@ You now have all the information required to deploy via the AWS Serverless Appli
 
 ### Trapdoor Setup
 
-You can create your tokens by editing the `config.json` _(in the AWS Lambda page)_ and adding both a path as well as a friendly reminder:
+After the deployment is complete you can create your tokens by editing the `config.json` _(in the AWS Lambda page)_ and adding both a path as well as a friendly reminder:
 
 ```
 ...
@@ -68,7 +68,7 @@ Consider using your custom domains instead of the AWS API URLs _(and map them to
 
 ## Usage
 
-Using Trapdoor is as simple as visiting the API Endpoint that is made available in the Lambda Application dashboard:
+Using Trapdoor is as simple as visiting the API Endpoint that is made available in the Lambda Application dashboard *(presented after the deployment is complete)*:
 
 <p align="center"><img src="./imgs/api-screen.png" width="319" height="231"></p>
 
