@@ -1,4 +1,4 @@
-name: trapdoor master deployment
+name: Trapdoor AWS SAR Deployment
 on:
   push:
     branches: [ master ]
