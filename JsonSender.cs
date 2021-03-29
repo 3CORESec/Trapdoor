@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -13,7 +14,7 @@ namespace Trapdoor
     {
 
         private readonly string send_link;
-        private readonly HttpClient _client;
+        private readonly WebClient _client;
         private readonly Storage<SessionLog> _storage;
         private readonly IMemoryCache memoryCache;
         private readonly Dictionary<string, string> paths;
@@ -22,7 +23,7 @@ namespace Trapdoor
         {
             _storage = storage;
             send_link = config.JsonLink;
-            _client = new HttpClient();
+            _client = new WebClient();
             paths = config.Paths;
             memoryCache = cache;
         }
@@ -34,7 +35,8 @@ namespace Trapdoor
                 var _path = paths.ContainsKey(path) ? paths[path] : path;
                 var message = $"Trapdoor triggered in: {_path}";
                 var temp = await GenerateAlert(res, sourceIp);
-                await _client.PostAsync(send_link, new StringContent(temp));
+                _client.UploadString(new Uri(send_link), temp);
+                //await _client.PostAsync(send_link, new StringContent(temp));
                 return temp;
             }
             catch (Exception e)
