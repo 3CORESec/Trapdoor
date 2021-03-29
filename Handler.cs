@@ -38,7 +38,9 @@ namespace Trapdoor
                     else
                         await alert.StoreLogs(sourceIp, res);
                 }
-                catch (Exception){}
+                catch (Exception e){
+                    Console.WriteLine($"Error in {alert.GetType().Name}: {e.Message}");
+                }
             }
 
             return fields.Item1 == null;
