@@ -11,8 +11,6 @@ namespace Trapdoor
 {
     public class JsonSender : SenderBase
     {
-
-        private readonly string send_link;
         private readonly HttpClient _client;
         private readonly Storage<SessionLog> _storage;
         private readonly IMemoryCache memoryCache;
@@ -21,8 +19,7 @@ namespace Trapdoor
         public JsonSender(Storage<SessionLog> storage, Config config, IMemoryCache cache) : base(storage, config, cache)
         {
             _storage = storage;
-            send_link = config.JsonLink;
-            _client = new HttpClient();
+            _client = new HttpClient { BaseAddress = new Uri(config.JsonLink)};
             paths = config.Paths;
             memoryCache = cache;
         }
