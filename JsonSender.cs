@@ -34,7 +34,8 @@ namespace Trapdoor
                 var _path = paths.ContainsKey(path) ? paths[path] : path;
                 var message = $"Trapdoor triggered in: {_path}";
                 var temp = await GenerateAlert(res, sourceIp);
-                await _client.PostAsync(send_link, new StringContent(temp));
+                var content = new StringContent(temp, Encoding.UTF8, "application/json");
+                await _client.PostAsync(send_link, content);
                 return temp;
             }
             catch (Exception e)
@@ -71,7 +72,7 @@ namespace Trapdoor
                 Console.WriteLine($"Error getting logs : {e.Message}");
             }
 
-            return JsonSerializer.Serialize(res);
+            return JsonSerializer.Serialize(res.Item2);
         }
     }
 }
