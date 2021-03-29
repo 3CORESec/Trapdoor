@@ -8,7 +8,7 @@ using Amazon.DynamoDBv2;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Trapdoor
@@ -23,7 +23,7 @@ namespace Trapdoor
         public Function()
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
-            config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
+            config = JsonSerializer.Deserialize<Config>(File.ReadAllTextAsync("config.json").Result);
             config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
             config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
             config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
@@ -33,6 +33,9 @@ namespace Trapdoor
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p));
+
+            Console.WriteLine(JsonSerializer.Serialize(types.Select(x => x.Name)));
+
             types.ToList().ForEach(type => {
                 ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>),typeof(Config), typeof(IMemoryCache) });
                 ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
