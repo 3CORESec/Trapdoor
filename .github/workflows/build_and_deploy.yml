@@ -1,4 +1,4 @@
-name: trapdoor master deployment
+name: Trapdoor AWS SAR Deployment
 on:
   push:
     branches: [ master ]
@@ -29,5 +29,9 @@ jobs:
       run: |
             cd ./staging/app
             zip -r trapdoor.zip .
-    - name: Upload zip file
-      run: aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
+    - name: Upload artifact zip file and SAM template
+      run: | 
+            aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
+            aws s3 cp sar.template s3://3cs-serverless-apps/trapdoor/
+    - name: Create new version in AWS SAR
+      run: aws serverlessrepo create-application-version --application-id "arn:aws:serverlessrepo:eu-central-1:756157594214:applications/Trapdoor" --semantic-version 1.0.0+$(date +"%H%M%S-%d%m%y") --source-code-archive-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/trapdoor.zip" --source-code-url "https://github.com/3CORESec/Trapdoor" --template-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/sar.template"
