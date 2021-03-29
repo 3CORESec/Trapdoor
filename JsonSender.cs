@@ -23,6 +23,7 @@ namespace Trapdoor
             _storage = storage;
             send_link = config.JsonLink;
             _client = new HttpClient();
+            paths = config.Paths;
             memoryCache = cache;
         }
 
