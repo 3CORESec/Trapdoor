@@ -33,7 +33,9 @@ namespace Trapdoor
             var type = typeof(ISender);
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p) && !type.IsInterface && !type.IsAbstract);
+                .Where(p => type.IsAssignableFrom(p));
+
+            types = types.Skip(2);
 
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(types.Select(x => x.Name)));
 
