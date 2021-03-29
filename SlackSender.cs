@@ -19,7 +19,7 @@ namespace Trapdoor
         private readonly Dictionary<string, string> paths;
         private readonly Slack _sender;
 
-        public SlackSender(Storage<SessionLog> storage, Config config, IMemoryCache cache) : base(storage, cache)
+        public SlackSender(Storage<SessionLog> storage, Config config, IMemoryCache cache) : base(storage, config, cache)
         {
             _storage = storage;
             _sender = new Slack(config);

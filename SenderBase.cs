@@ -37,7 +37,7 @@ namespace Trapdoor
             }
         }
 
-        protected SenderBase(Storage<SessionLog> storage, IMemoryCache cache)
+        protected SenderBase(Storage<SessionLog> storage, Config config, IMemoryCache cache)
         {
             _storage = storage;
             memoryCache = cache;

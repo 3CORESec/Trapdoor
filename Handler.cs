@@ -21,8 +21,8 @@ namespace Trapdoor
             _alerts = new List<ISender>();
             tor_exit_list = config.TorExitList;
             _client = new HttpClient();
-            _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
-            _alerts.Add(new SlackSender(_storage, config, memoryCache));
+            //_storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
+            //_alerts.Add(new SlackSender(_storage, config, memoryCache));
         }
         public async Task<bool> SendAlerts(APIGatewayProxyRequest request, string guid)
         {
