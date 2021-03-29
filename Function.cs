@@ -34,8 +34,8 @@ namespace Trapdoor
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p));
             types.ToList().ForEach(type => {
-                ConstructorInfo ctor = type.GetConstructor(new[] { typeof(int) });
-                ISender instance = (ISender)ctor.Invoke(new object[] { _storage, config, memoryCache });
+                ConstructorInfo ctor = type.GetConstructors()[0];
+                ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
                 _alerts.Add(instance);
             });
 
