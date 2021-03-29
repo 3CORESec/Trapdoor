@@ -48,7 +48,7 @@ namespace Trapdoor
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
         {
-            var sender = new Handler(config, memoryCache);
+            var sender = new Handler(config, memoryCache, _alerts);
             var guid = Guid.NewGuid().ToString();
             if (await sender.SendAlerts(request, guid))
                 return new APIGatewayProxyResponse

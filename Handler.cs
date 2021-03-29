@@ -16,9 +16,9 @@ namespace Trapdoor
         private readonly string tor_exit_list;
         private readonly Storage<SessionLog> _storage;
         private readonly List<ISender> _alerts;
-        public Handler(Config config, IMemoryCache memoryCache)
+        public Handler(Config config, IMemoryCache memoryCache, List<ISender> alerts)
         {
-            _alerts = new List<ISender>();
+            _alerts = alerts;
             tor_exit_list = config.TorExitList;
             _client = new HttpClient();
             //_storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
