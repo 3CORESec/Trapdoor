@@ -35,8 +35,6 @@ namespace Trapdoor
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p) && !type.Name.StartsWith("I") && !type.Name.Contains("Base"));
 
-            types = types.Skip(2);
-
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(types.Select(x => x.Name)));
 
             types.ToList().ForEach(type => {
