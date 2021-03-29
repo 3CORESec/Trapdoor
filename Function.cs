@@ -29,7 +29,7 @@ namespace Trapdoor
             config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
-            var type = typeof(ISender);
+            var type = typeof(SenderBase);
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p));
