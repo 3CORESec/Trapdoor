@@ -29,12 +29,16 @@ namespace Trapdoor
             var fields = await ParseAlert(request);
             foreach (var alert in _alerts)
             {
-                var sourceIp = request.RequestContext.Identity.SourceIp;
-                var res = await alert.SendAlert(fields, sourceIp, request.Path, guid);
-                if (fields.Item1 != null)
-                    await alert.StoreLogs(fields.Item1, res);
-                else
-                    await alert.StoreLogs(sourceIp, res);
+                try
+                {
+                    var sourceIp = request.RequestContext.Identity.SourceIp;
+                    var res = await alert.SendAlert(fields, sourceIp, request.Path, guid);
+                    if (fields.Item1 != null)
+                        await alert.StoreLogs(fields.Item1, res);
+                    else
+                        await alert.StoreLogs(sourceIp, res);
+                }
+                catch (Exception){}
             }
 
             return fields.Item1 == null;
