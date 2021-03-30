@@ -11,6 +11,9 @@
     },
     "WEBHOOKTOKEN":{
         "Type":"String"
+    },
+    "JSONLINK":{
+        "Type":"String"
     }
   },
   "Resources" : {
@@ -156,6 +159,9 @@
                     },
                 "SLACKPATH": {
                         "Ref": "SLACKPATH"
+                    },
+                "JSONLINK": {
+                        "Ref": "JSONLINK"
                     }
             }
         },
