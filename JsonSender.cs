@@ -21,7 +21,7 @@ namespace Trapdoor
         public JsonSender(Storage<SessionLog> storage, Config config, IMemoryCache cache) : base(storage, config, cache)
         {
             _storage = storage;
-            send_link = config.JsonLink;
+            send_link = config.WebHookPost;
             _client = new HttpClient();
             paths = config.Paths;
             memoryCache = cache;

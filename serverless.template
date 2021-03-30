@@ -12,7 +12,7 @@
     "WEBHOOKTOKEN":{
         "Type":"String"
     },
-    "JSONLINK":{
+    "WEBHOOKPOST":{
         "Type":"String"
     }
   },
@@ -160,8 +160,8 @@
                 "SLACKPATH": {
                         "Ref": "SLACKPATH"
                     },
-                "JSONLINK": {
-                        "Ref": "JSONLINK"
+                "WEBHOOKPOST": {
+                        "Ref": "WEBHOOKPOST"
                     }
             }
         },

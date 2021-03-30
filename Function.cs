@@ -31,8 +31,8 @@ namespace Trapdoor
                 config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
             if (string.IsNullOrEmpty(config.WebHookToken))
                 config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
-            if (string.IsNullOrEmpty(config.JsonLink))
-                config.JsonLink = Environment.GetEnvironmentVariable("JSONLINK");
+            if (string.IsNullOrEmpty(config.WebHookPost))
+                config.WebHookPost = Environment.GetEnvironmentVariable("WEBHOOKPOST");
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
             var type = typeof(ISender);
