@@ -9,6 +9,5 @@
   "TorExitList": "https://check.torproject.org/torbulkexitlist",
   "IpLookup": "http://ip-api.com/line/{IP}?fields=countryCode",
   "FlagIcon": "https://flagcdn.com/h240/{CC}.png",
-  "ThreatIntelLookup": "https://talosintelligence.com/reputation_center/lookup?search={IP}",
-  "JsonLink": "https://webhook.site/38fcfcd4-c71c-493c-9812-02ca35df330c"
+  "ThreatIntelLookup": "https://talosintelligence.com/reputation_center/lookup?search={IP}"
 }
