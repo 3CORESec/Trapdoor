@@ -2,13 +2,9 @@
   "Paths": {
     "test": "3CORESEC DEMO PATH"
   },
-  "SlackPath": "{SLACKPATH}",
-  "WebhookChannel": "{WEBHOOKCHANNEL}",
   //slack bot must be invited to be able to list and update private chats (https://slack.com/api/conversations.list?types=public_channel,private_channel)
-  "WebHookToken": "{WEBHOOKTOKEN}",
   "TorExitList": "https://check.torproject.org/torbulkexitlist",
   "IpLookup": "http://ip-api.com/line/{IP}?fields=countryCode",
   "FlagIcon": "https://flagcdn.com/h240/{CC}.png",
   "ThreatIntelLookup": "https://talosintelligence.com/reputation_center/lookup?search={IP}",
-  "JsonLink": "{JSONLINK}"
 }

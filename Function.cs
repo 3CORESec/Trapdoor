@@ -25,10 +25,14 @@ namespace Trapdoor
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
+            if (string.IsNullOrEmpty(config.SlackPath))
             config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
-            config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
-            config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
-            config.JsonLink = Environment.GetEnvironmentVariable("JSONLINK");
+            if (string.IsNullOrEmpty(config.WebhookChannel))
+                config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
+            if (string.IsNullOrEmpty(config.WebHookToken))
+                config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
+            if (string.IsNullOrEmpty(config.JsonLink))
+                config.JsonLink = Environment.GetEnvironmentVariable("JSONLINK");
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
             var type = typeof(ISender);
