@@ -36,7 +36,7 @@ namespace Trapdoor
                 var temp = await GenerateAlert(res, sourceIp);
                 var content = new StringContent(temp, Encoding.UTF8, "application/json");
                 await _client.PostAsync(send_link, content);
-                return temp;
+                return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
             }
             catch (Exception e)
             {
