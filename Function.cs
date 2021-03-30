@@ -28,6 +28,7 @@ namespace Trapdoor
             config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
             config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
             config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
+            config.JsonLink = Environment.GetEnvironmentVariable("JSONLINK");
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
             var type = typeof(ISender);
