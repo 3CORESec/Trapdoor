@@ -12,6 +12,6 @@ namespace Trapdoor
         public string IpLookup { get; set; }
         public string FlagIcon { get; set; }
         public string ThreatIntelLookup { get; set; }
-        public string WebHookPost { get; set; }
+        public string PostUrl { get; set; }
     }
 }

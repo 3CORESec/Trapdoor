@@ -4,16 +4,20 @@
   "Description" : "Template for trapdoor honeypot",
   "Parameters" : {
     "SLACKPATH":{
-        "Type":"String"
+        "Type":"String",
+        "Default": ""
     },
     "WEBHOOKCHANNEL":{
-        "Type":"String"
+        "Type":"String",
+        "Default": ""
     },
     "WEBHOOKTOKEN":{
-        "Type":"String"
+        "Type":"String",
+        "Default": ""
     },
-    "WEBHOOKPOST":{
-        "Type":"String"
+    "POSTURL":{
+        "Type":"String",
+        "Default": ""
     }
   },
   "Resources" : {
@@ -160,8 +164,8 @@
                 "SLACKPATH": {
                         "Ref": "SLACKPATH"
                     },
-                "WEBHOOKPOST": {
-                        "Ref": "WEBHOOKPOST"
+                "POSTURL": {
+                        "Ref": "POSTURL"
                     }
             }
         },

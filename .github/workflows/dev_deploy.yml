@@ -27,4 +27,4 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
     - name: deploy
-      run: sam deploy --template-file ./serverless.template --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name trapdoor --parameter-overrides WEBHOOKTOKEN=${{ secrets.WEBHOOKTOKEN }} WEBHOOKCHANNEL=${{ secrets.WEBHOOKCHANNEL }} SLACKPATH=${{ secrets.SLACKPATH }} WEBHOOKPOST=${{ secrets.WEBHOOKPOST }} --s3-bucket trapdoor-github-action-bucket --debug
+      run: sam deploy --template-file ./serverless.template --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name trapdoor --parameter-overrides WEBHOOKTOKEN=${{ secrets.WEBHOOKTOKEN }} WEBHOOKCHANNEL=${{ secrets.WEBHOOKCHANNEL }} SLACKPATH=${{ secrets.SLACKPATH }} POSTURL=${{ secrets.POSTURL }} --s3-bucket trapdoor-github-action-bucket --debug
