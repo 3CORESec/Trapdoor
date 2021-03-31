@@ -42,7 +42,7 @@ You can enable one of them or both. Enabling the alert method requires only that
 
 To enable the HTTP POST option *(where Trapdoor will send a JSON structure of its findings to the specificed URL)* simply paste the URL in the `POSTURL` variable.
 
-### Slack Setup
+### Slack
 
 Trapdoor also allows you to have notifications and alerts sent to a Slack channel. This section will provide you with detailed information on how to create an app/bot to send your Trapdoor notifications.
 
