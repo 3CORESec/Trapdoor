@@ -110,7 +110,10 @@
                                 "s3:PutBucketObjectLockConfiguration",
                                 "s3:CreateJob",
                                 "s3:ReplicateDelete",
-                                "dynamodb:GetRecords"
+                                "dynamodb:GetRecords",
+                                "ec2:CreateNetworkInterface",
+                                "ec2:DescribeNetworkInterfaces",
+                                "ec2:DeleteNetworkInterface"
                             ],
                             "Resource": "*"
                         }
