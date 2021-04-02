@@ -26,11 +26,12 @@ namespace Trapdoor
         }
         public async Task<bool> SendAlerts(APIGatewayProxyRequest request, string guid)
         {
-            var fields = await ParseAlert(request);
+            (string, Dictionary<string, dynamic>) fields = default;
             foreach (var alert in _alerts)
             {
                 try
                 {
+                    fields = await ParseAlert(request);
                     var sourceIp = request.RequestContext.Identity.SourceIp;
                     var res = await alert.SendAlert(fields, sourceIp, request.Path, guid);
                     if (fields.Item1 != null)
