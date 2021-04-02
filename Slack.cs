@@ -30,7 +30,6 @@ namespace Trapdoor
             data["ts"] = ts;
             data["attachments"] = payload;
             var response = client.UploadValues("https://slack.com/api/chat.update", "POST", data);
-            Console.WriteLine($"Editing:{Encoding.UTF8.GetString(response)}");
             return JsonConvert.DeserializeObject<dynamic>(Encoding.UTF8.GetString(response))["ts"];
         }
         public  string SendNotification(string payload, string text)
@@ -42,7 +41,6 @@ namespace Trapdoor
             data["text"] = text;
             data["attachments"] = payload;
             var response = client.UploadValues("https://slack.com/api/chat.postMessage", "POST", data);
-            Console.WriteLine($"Sending:{Encoding.UTF8.GetString(response)}");
             return JsonConvert.DeserializeObject<dynamic>(Encoding.UTF8.GetString(response))["ts"];
         }
 

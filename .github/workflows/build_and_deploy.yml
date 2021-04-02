@@ -1,16 +1,17 @@
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 name: Trapdoor AWS SAR Deployment
 on:
   push:
     branches: [ master ]
+    tags:
+      - '*.*.*'
   pull_request:
     branches: [ master ]
+    tags:
+      - '*.*.*'
 jobs:
   build:
+    if: startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:     
     - uses: actions/checkout@v2
     - name: setup dotnet
@@ -38,4 +39,7 @@ jobs:
             aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
             aws s3 cp sar.template s3://3cs-serverless-apps/trapdoor/
     - name: Create new version in AWS SAR
-      run: aws serverlessrepo create-application-version --application-id "arn:aws:serverlessrepo:eu-central-1:756157594214:applications/Trapdoor" --semantic-version $(cat VERSION) --source-code-archive-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/trapdoor.zip" --source-code-url "https://github.com/3CORESec/Trapdoor" --template-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/sar.template"
+      run: |
+            temp=${{github.ref}}
+            temp=$(sed 's|refs/tags/||' <<< $temp)
+            aws serverlessrepo create-application-version --application-id "arn:aws:serverlessrepo:eu-central-1:756157594214:applications/Trapdoor" --semantic-version $temp --source-code-archive-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/trapdoor.zip" --source-code-url "https://github.com/3CORESec/Trapdoor" --template-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/sar.template"
