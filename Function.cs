@@ -47,9 +47,9 @@ namespace Trapdoor
 
         private void initConfig()
         {
-            Console.WriteLine("Entered");
             _alerts = new List<ISender>();
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
+            Console.WriteLine(JsonConvert.SerializeObject(config.Paths));
             if (string.IsNullOrEmpty(config.SlackPath))
                 config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
             if (string.IsNullOrEmpty(config.WebhookChannel))
