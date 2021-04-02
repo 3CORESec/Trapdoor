@@ -24,15 +24,6 @@ namespace Trapdoor
         public Function()
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
-            config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
-            if (string.IsNullOrEmpty(config.SlackPath))
-            config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
-            if (string.IsNullOrEmpty(config.WebhookChannel))
-                config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
-            if (string.IsNullOrEmpty(config.WebHookToken))
-                config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
-            if (string.IsNullOrEmpty(config.PostUrl))
-                config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
             var type = typeof(ISender);
@@ -53,6 +44,7 @@ namespace Trapdoor
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
         {
+            initConfig();
             var sender = new Handler(config, memoryCache, _alerts);
             var guid = Guid.NewGuid().ToString();
             if (await sender.SendAlerts(request, guid))
@@ -66,6 +58,19 @@ namespace Trapdoor
             {
                 StatusCode = 200
             };
+        }
+
+        private void initConfig()
+        {
+            config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
+            if (string.IsNullOrEmpty(config.SlackPath))
+                config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
+            if (string.IsNullOrEmpty(config.WebhookChannel))
+                config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
+            if (string.IsNullOrEmpty(config.WebHookToken))
+                config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
+            if (string.IsNullOrEmpty(config.PostUrl))
+                config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
         }
     }
 }
