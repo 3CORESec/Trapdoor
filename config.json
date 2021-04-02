@@ -1,6 +1,7 @@
 {
   "Paths": {
-    "test": "3CORESEC DEMO PATH"
+    "test": "3CORESEC DEMO PATH",
+    "allthesecrets": "OTHER PATH"
   },
   //slack bot must be invited to be able to list and update private chats (https://slack.com/api/conversations.list?types=public_channel,private_channel)
   "TorExitList": "https://check.torproject.org/torbulkexitlist",
