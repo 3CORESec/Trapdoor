@@ -17,7 +17,7 @@ namespace Trapdoor
     public class Function
     {
         private readonly IMemoryCache memoryCache;
-        private readonly List<ISender> _alerts;
+        private List<ISender> _alerts;
         private readonly Storage<SessionLog> _storage;
 
         private Config config;
@@ -25,7 +25,6 @@ namespace Trapdoor
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
-            _alerts = new List<ISender>();
         }
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
@@ -48,6 +47,7 @@ namespace Trapdoor
 
         private void initConfig()
         {
+            _alerts = new List<ISender>();
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllTextAsync("config.json").Result);
             if (string.IsNullOrEmpty(config.SlackPath))
                 config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
