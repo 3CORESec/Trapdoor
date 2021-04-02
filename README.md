@@ -6,31 +6,45 @@ Trapdoor is an AWS Serverless Application meant to create and alert on [honeyTok
 
 <img align="right" src="./imgs/screenshot.png" width="440" height="249">
 
-- Slack Notifications
-- Aggregation & Client Tracking on Slack Notifications
+- Slack notifications
+- Webhook notifications
+- Aggregation (by IP and session) & client tracking
 - HTTP-based and JavaScript-based fingerprinting
+- Tracking and editing of Slack messages to enrich existing alerts
 - Custom paths and friendly reminders
 - & more!
 
 Trapdoor is inspired by the awesome work of [Adel](https://twitter.com/0x4d31) in [honeyLambda](https://github.com/0x4D31/honeyLambda).
 
-Read the following articles to know more about the project:
+We'll provide updates on new features and bug fixes in our blog. Visit the following articles to know more:
 
-- [Trapdoor - The serverless HTTP Honeypot](https://blog.3coresec.com/2021/03/trapdoor-serverless-http-honeypot.html)
+- [Trapdoor Announcement - The serverless HTTP Honeypot](https://blog.3coresec.com/2021/03/trapdoor-serverless-http-honeypot.html)
+- [3CORESec Blog - Trapdoor-tagged posts](https://blog.3coresec.com/search/label/Trapdoor)
 
 ## Installation
 
 Trapdoor is available as a serverless application on AWS Serverless Application Repository. In the region where you'd like to deploy Trapdoor, visit the Serverless Application Repository _(in AWS Console, just search for it in the Services section)_ and head over to Available Applications.
 
-Search for Trapdoor _(make sure to enable "show apps that create custom IAM roles or resources policies")_ and click on deploy.
+Search for Trapdoor _(make sure to enable "show apps that create custom IAM roles or resources policies")_ and click on deploy. 
 
-You'll have to provide some input to the application before it can be deployed to your account. Please check the **Slack Setup** section below before continuing.
+While the installation of Trapdoor is fully automatic you will have to provide some input to the application before it can be deployed to your account depending on which alert modules you'd like to enable. Please check the **Alert** section below before continuing.
 
-## Configuration
+## Alert Configuration
 
-### Slack Setup
+Trapdoor provides 2 alert mechanisms:
 
-Trapdoor relies on Slack to provide you with alerts. This section will provide you with detailed information on how to create an app/bot to send your Trapdoor notifications.
+- HTTP POST / Webhook
+- Slack Notifications
+
+You can enable one of them or both. Enabling the alert method requires only that you enter the information in the deployment page of AWS Serverless Application Repository, as we'll explain below.
+
+### HTTP POST
+
+To enable the HTTP POST option *(where Trapdoor will send a JSON structure of its findings to the specificed URL)* simply paste the URL in the `POSTURL` variable.
+
+### Slack
+
+Trapdoor also allows you to have notifications and alerts sent to a Slack channel. This section will provide you with detailed information on how to create an app/bot to send your Trapdoor notifications.
 
 1. Visit the [Apps section](https://api.slack.com/apps) on Slack and click on **Create New App**
 2. Give it a name and choose the desired Slack
@@ -48,7 +62,7 @@ You now have all the information required to deploy via the AWS Serverless Appli
 - **WEBHOOKCHANNEL:** ID that was retrieved via Slack Web _(example: `C0114EEEG59`)_
 - **WEBHOOKTOKEN:** `Bot User OAuth Token` from the previously created app
 
-### Trapdoor Setup
+## Trapdoor Setup
 
 After the deployment is complete you can create your tokens by editing the `config.json` _(in the AWS Lambda page)_ and adding both a path as well as a friendly reminder:
 

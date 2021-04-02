@@ -1,3 +1,6 @@
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 name: Trapdoor AWS SAR Deployment
 on:
   push:
@@ -7,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:     
     - uses: actions/checkout@v2
     - name: setup dotnet
@@ -15,7 +19,7 @@ jobs:
         dotnet-version: 3.1.101
     - name: dependencies
       run: dotnet restore
-    - name: build api
+    - name: Build API
       run: |
             dotnet build Trapdoor.csproj --configuration Production
             dotnet publish Trapdoor.csproj -o ./staging/app /p:EnvironmentName=Production
@@ -29,9 +33,19 @@ jobs:
       run: |
             cd ./staging/app
             zip -r trapdoor.zip .
+    - name: Bump version of Trapdoor pre-SAR release
+      run: |
+            cat VERSION | ( IFS=".$IFS" ; read a b c && echo $a.$b.$((c + 1)) ) > NEWVERSION
+            mv NEWVERSION VERSION
+            git config --global user.name 'Github Actions'
+            git config --global user.email 'robot@noreply.github.com'
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/3coresec/Trapdoor
+            git add VERSION
+            git commit -m "Version BUMP"
+            git push
     - name: Upload artifact zip file and SAM template
       run: | 
             aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
             aws s3 cp sar.template s3://3cs-serverless-apps/trapdoor/
     - name: Create new version in AWS SAR
-      run: aws serverlessrepo create-application-version --application-id "arn:aws:serverlessrepo:eu-central-1:756157594214:applications/Trapdoor" --semantic-version 1.0.1+$(date +"%H%M%S%d%m%y") --source-code-archive-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/trapdoor.zip" --source-code-url "https://github.com/3CORESec/Trapdoor" --template-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/sar.template"
+      run: aws serverlessrepo create-application-version --application-id "arn:aws:serverlessrepo:eu-central-1:756157594214:applications/Trapdoor" --semantic-version $(cat VERSION) --source-code-archive-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/trapdoor.zip" --source-code-url "https://github.com/3CORESec/Trapdoor" --template-url "https://3cs-serverless-apps.s3.eu-central-1.amazonaws.com/trapdoor/sar.template"
