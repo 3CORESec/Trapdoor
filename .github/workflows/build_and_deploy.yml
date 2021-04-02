@@ -33,16 +33,6 @@ jobs:
       run: |
             cd ./staging/app
             zip -r trapdoor.zip .
-    - name: Bump version of Trapdoor pre-SAR release
-      run: |
-            cat VERSION | ( IFS=".$IFS" ; read a b c && echo $a.$b.$((c + 1)) ) > NEWVERSION
-            mv NEWVERSION VERSION
-            git config --global user.name 'Github Actions'
-            git config --global user.email 'robot@noreply.github.com'
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/3coresec/Trapdoor
-            git add VERSION
-            git commit -m "Version BUMP"
-            git push
     - name: Upload artifact zip file and SAM template
       run: | 
             aws s3 cp ./staging/app/trapdoor.zip s3://3cs-serverless-apps/trapdoor/ --content-type=application/zip
