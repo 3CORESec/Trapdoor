@@ -25,26 +25,6 @@ namespace Trapdoor
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
-            _alerts = new List<ISender>();
-            config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
-            Console.WriteLine(JsonConvert.SerializeObject(config.Paths));
-            if (string.IsNullOrEmpty(config.SlackPath))
-                config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
-            if (string.IsNullOrEmpty(config.WebhookChannel))
-                config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
-            if (string.IsNullOrEmpty(config.WebHookToken))
-                config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
-            if (string.IsNullOrEmpty(config.PostUrl))
-                config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
-            var type = typeof(ISender);
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
-            types.ToList().ForEach(type => {
-                ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>), typeof(Config), typeof(IMemoryCache) });
-                ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
-                _alerts.Add(instance);
-            });
         }
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
@@ -67,26 +47,26 @@ namespace Trapdoor
 
         private void initConfig()
         {
-            //_alerts = new List<ISender>();
-            //config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
-            //Console.WriteLine(JsonConvert.SerializeObject(config.Paths));
-            //if (string.IsNullOrEmpty(config.SlackPath))
-            //    config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
-            //if (string.IsNullOrEmpty(config.WebhookChannel))
-            //    config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
-            //if (string.IsNullOrEmpty(config.WebHookToken))
-            //    config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
-            //if (string.IsNullOrEmpty(config.PostUrl))
-            //    config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
-            //var type = typeof(ISender);
-            //var types = AppDomain.CurrentDomain.GetAssemblies()
-            //    .SelectMany(s => s.GetTypes())
-            //    .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
-            //types.ToList().ForEach(type => {
-            //    ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>), typeof(Config), typeof(IMemoryCache) });
-            //    ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
-            //    _alerts.Add(instance);
-            //});
+            _alerts = new List<ISender>();
+            config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+            Console.WriteLine(JsonConvert.SerializeObject(config.Paths));
+            if (string.IsNullOrEmpty(config.SlackPath))
+                config.SlackPath = Environment.GetEnvironmentVariable("SLACKPATH");
+            if (string.IsNullOrEmpty(config.WebhookChannel))
+                config.WebhookChannel = Environment.GetEnvironmentVariable("WEBHOOKCHANNEL");
+            if (string.IsNullOrEmpty(config.WebHookToken))
+                config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
+            if (string.IsNullOrEmpty(config.PostUrl))
+                config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
+            var type = typeof(ISender);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
+            types.ToList().ForEach(type => {
+                ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>), typeof(Config), typeof(IMemoryCache) });
+                ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
+                _alerts.Add(instance);
+            });
         }
     }
 }
