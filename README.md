@@ -76,10 +76,6 @@ After the deployment is complete you can create your tokens by editing the `conf
 ...
 ```
 
-### Domains & Customization
-
-Consider using your custom domains instead of the AWS API URLs _(and map them to the /Prod stage in AWS API)_ so that your tokens can be made available under, for example, `https://important-corp.com/login`. Bear in mind that you can associate unlimited *(different)* domains to an API in AWS API GW, so it's really up to you to configure the best deception options for your tokens 🕵🏻‍♂️
-
 ## Usage
 
 Using Trapdoor is as simple as visiting the API Endpoint that is made available in the Lambda Application dashboard *(presented after the deployment is complete)*:
@@ -87,6 +83,10 @@ Using Trapdoor is as simple as visiting the API Endpoint that is made available 
 <p align="center"><img src="./imgs/api-screen.png" width="319" height="231"></p>
 
 While all paths *($API/Prod/WHATEVER)* are accepted and alerted, choosing a path that is configured in Trapdoor `config.json` will provide you with a friendly reminder of where that token is located/stored.
+
+### Domains & Customization
+
+Consider using your custom domains instead of the AWS API URLs _(and map them to the /Prod stage in AWS API)_ so that your tokens can be made available under, for example, `https://important-corp.com/login`. Bear in mind that you can associate unlimited *(different)* domains to an API in AWS API GW, so it's really up to you to configure the best deception options for your tokens 🕵🏻‍
 
 ## Feedback
 
