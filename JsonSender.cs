@@ -31,9 +31,10 @@ namespace Trapdoor
         {
             try
             {
-                var _path = paths.ContainsKey(path) ? paths[path] : path;
+                path = path.Split("/")[1];
+                var _path = paths.ContainsKey(path)? paths[path] : path;
                 var message = $"Trapdoor triggered in: {_path}";
-                var temp = await GenerateAlert(res, sourceIp);
+                var temp = await GenerateAlert(res, sourceIp, message);
                 var content = new StringContent(temp, Encoding.UTF8, "application/json");
                 await _client.PostAsync(send_link, content);
                 return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
@@ -45,10 +46,11 @@ namespace Trapdoor
             }
         }
 
-        private async Task<string> GenerateAlert((string, Dictionary<string, dynamic>) res, string sourceIp)
+        private async Task<string> GenerateAlert((string, Dictionary<string, dynamic>) res, string sourceIp, string message)
         {
             var ipLinks = new List<string>();
             var sessionLinks = new List<string>();
+            res.Item2["Friendly Reminder"] = message;
             try
             {
                 if (!string.IsNullOrEmpty(res.Item1))
