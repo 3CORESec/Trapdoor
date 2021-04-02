@@ -26,20 +26,6 @@ namespace Trapdoor
             memoryCache = new MemoryCache(new MemoryCacheOptions());
             _storage = new Storage<SessionLog>(new AmazonDynamoDBClient());
             _alerts = new List<ISender>();
-            var type = typeof(ISender);
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
-
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(types.Select(x => x.Name)));
-
-            types.ToList().ForEach(type => {
-                ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>),typeof(Config), typeof(IMemoryCache) });
-                ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
-                _alerts.Add(instance);
-            });
-
-
         }
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest request)
@@ -71,6 +57,15 @@ namespace Trapdoor
                 config.WebHookToken = Environment.GetEnvironmentVariable("WEBHOOKTOKEN");
             if (string.IsNullOrEmpty(config.PostUrl))
                 config.PostUrl = Environment.GetEnvironmentVariable("POSTURL");
+            var type = typeof(ISender);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
+            types.ToList().ForEach(type => {
+                ConstructorInfo ctor = type.GetConstructor(new[] { typeof(Storage<SessionLog>), typeof(Config), typeof(IMemoryCache) });
+                ISender instance = ctor.Invoke(new object[] { _storage, config, memoryCache }) as ISender;
+                _alerts.Add(instance);
+            });
         }
     }
 }
