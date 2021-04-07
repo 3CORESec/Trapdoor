@@ -23,9 +23,7 @@ We'll provide updates on new features and bug fixes in our blog. Visit the follo
 
 ## Installation
 
-Trapdoor is available as a serverless application on AWS Serverless Application Repository. In the region where you'd like to deploy Trapdoor, visit the Serverless Application Repository _(in AWS Console, just search for it in the Services section)_ and head over to Available Applications.
-
-Search for Trapdoor _(make sure to enable "show apps that create custom IAM roles or resources policies")_ and click on deploy. 
+Trapdoor is available as a serverless application on [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/). In the region where you'd like to deploy Trapdoor head over to Available Applications, search for Trapdoor _(make sure to enable "show apps that create custom IAM roles or resources policies")_ and click on deploy. 
 
 While the installation of Trapdoor is fully automatic you will have to provide some input to the application before it can be deployed to your account depending on which alert modules you'd like to enable. Please check the **Alert** section below before continuing.
 
@@ -64,7 +62,11 @@ You now have all the information required to deploy via the AWS Serverless Appli
 
 ## Trapdoor Setup
 
-After the deployment is complete you can create your tokens by editing the `config.json` _(in the AWS Lambda page)_ and adding both a path as well as a friendly reminder:
+After the deployment is complete you can create your tokens by editing the `config.json` _(in the AWS Lambda page)_ and adding both a path as well as a friendly reminder. Due to a limitation of Cloud9 AWS Code Editor it's not possible to edit the configuration file without changing the **Runtime settings**. Temporarily change it to Node _(for example)_, edit the file and change it back to its original runtime. 
+
+<p align="center"><img src="./imgs/runtime.png" height="231"></p>
+
+`config.json` example:
 
 ```
 ...
