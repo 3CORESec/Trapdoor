@@ -18,8 +18,9 @@ Trapdoor is inspired by the awesome work of [Adel](https://twitter.com/0x4d31) i
 
 We'll provide updates on new features and bug fixes in our blog. Visit the following articles to know more:
 
-- [Trapdoor Announcement - The serverless HTTP Honeypot](https://blog.3coresec.com/2021/03/trapdoor-serverless-http-honeypot.html)
+- [3CORESec Trapdoor Announcement - The serverless HTTP Honeypot](https://blog.3coresec.com/2021/03/trapdoor-serverless-http-honeypot.html)
 - [3CORESec Blog - Trapdoor-tagged posts](https://blog.3coresec.com/search/label/Trapdoor)
+- [Wes Lambert - Monitoring Adversaries at Your Trapdoor with Security Onion](https://wlambertts.medium.com/monitoring-adversaries-at-your-trapdoor-with-security-onion-c4ac3899b2a2)
 
 ## Installation
 
